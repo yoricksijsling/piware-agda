@@ -12,7 +12,7 @@ open import Relation.Binary.PropositionalEquality using (_≢_)
 
 open import PiWare.Synthesizable At using (⇓W⇑; ⇓W⇑-×; ⇓W⇑-⊎)
 open import PiWare.Circuit.Core Gt
-     using (ℂ'; comb'; DelayLoop; _⟫'_; _|'_; _|+'_; _comb⟫'_; _comb|'_; _comb|+'_; _Named_)
+     using (ℂ'; comb'; Combℂ'; cc'; DelayLoop; _⟫'_; _|'_; _|+'_; _comb⟫'_; _comb|'_; _comb|+'_; _Named_)
 
 open Atomic At using (Atom#) 
 \end{code}
@@ -41,6 +41,18 @@ comb (Mkℂ c') = comb' c'
 %</comb>
 
 
+%<*CombC>
+\begin{code}
+record Combℂ (α β : Set) {i j : ℕ} : Set where
+    inductive
+    constructor cc
+    field
+      circ : ℂ α β {i} {j}
+      {{prf}} : comb circ
+\end{code}
+%</CombC>
+
+
 -- "Smart constructors"
 %<*named>
 \begin{code}
@@ -52,8 +64,8 @@ $</named>
 %<*delayC>
 \begin{code}
 delayℂ : ∀ {α i β j γ k} → ⦃ sα : ⇓W⇑ α {i} ⦄ ⦃ sβ : ⇓W⇑ β {j} ⦄ ⦃ sγ : ⇓W⇑ γ {k} ⦄
-         → (c : ℂ (α × γ) (β × γ) {i + k} {j + k}) {p : comb c} → ℂ α β {i} {j}
-delayℂ ⦃ sα ⦄ ⦃ sβ ⦄ ⦃ sγ ⦄ (Mkℂ c') {p} = Mkℂ ⦃ sα ⦄ ⦃ sβ ⦄ (DelayLoop c' {p})
+         → (c : Combℂ (α × γ) (β × γ) {i + k} {j + k}) → ℂ α β {i} {j}
+delayℂ ⦃ sα ⦄ ⦃ sβ ⦄ ⦃ sγ ⦄ (cc (Mkℂ c')) = Mkℂ ⦃ sα ⦄ ⦃ sβ ⦄ (DelayLoop (cc' c'))
 \end{code}
 %</delayC>
 

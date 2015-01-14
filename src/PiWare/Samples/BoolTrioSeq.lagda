@@ -10,7 +10,7 @@ open import PiWare.Synthesizable Atomic-B
 open import PiWare.Synthesizable.Bool
 open import PiWare.Gates.BoolTrio using (BoolTrio)
 open import PiWare.Plugs BoolTrio using (pid; pALR; pARL; pSwap; pFork×)
-open import PiWare.Circuit BoolTrio using (ℂ; delayℂ; _⟫_; _||_; _named_)
+open import PiWare.Circuit BoolTrio using (ℂ; cc; delayℂ; _⟫_; _||_; _named_)
 open import PiWare.Samples.BoolTrioComb using (⊥ℂ; ¬ℂ; ∨ℂ; mux2to1)
 \end{code}
 
@@ -18,14 +18,14 @@ open import PiWare.Samples.BoolTrioComb using (⊥ℂ; ¬ℂ; ∨ℂ; mux2to1)
 %<*shift>
 \begin{code}
 shift : ℂ B B
-shift = delayℂ pSwap
+shift = delayℂ (cc pSwap)
 \end{code}
 %</shift>
 
 %<*toggle>
 \begin{code}
 toggle : ℂ ⊤ B
-toggle = ⊥ℂ ⟫ delayℂ (∨ℂ ⟫ ¬ℂ ⟫ pFork×)
+toggle = ⊥ℂ ⟫ delayℂ (cc (∨ℂ ⟫ ¬ℂ ⟫ pFork×) ⦃ _ ⦄)
 \end{code}
 %</toggle>
 
@@ -33,7 +33,7 @@ toggle = ⊥ℂ ⟫ delayℂ (∨ℂ ⟫ ¬ℂ ⟫ pFork×)
 %<*reg>
 \begin{code}
 reg : ℂ (B × B) B
-reg = delayℂ comb
+reg = delayℂ (cc comb ⦃ _ ⦄)
     where rearrange = pSwap || pid  ⟫  pALR  ⟫  pid || pSwap
           comb      = rearrange  ⟫  mux2to1  ⟫  pFork×
 \end{code}
