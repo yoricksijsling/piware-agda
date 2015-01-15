@@ -33,6 +33,13 @@ record Combℂ' (i o : ℕ) : Set where
 \end{code}
 %</CombC-core>
 
+%<*cc!-core>
+\begin{code}
+cc!' : ∀ {i o} (c : ℂ' i o) {p : comb' c} → Combℂ' i o
+cc!' c {p} = cc' c ⦃ p ⦄
+\end{code}
+%</cc!-core>
+
 %<*Circuit-core>
 \begin{code}
 data ℂ' where

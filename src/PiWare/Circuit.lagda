@@ -52,6 +52,13 @@ record Combℂ (α β : Set) {i j : ℕ} : Set where
 \end{code}
 %</CombC>
 
+%<*cc!>
+\begin{code}
+cc! : ∀ {α i β j} (c : ℂ α β {i} {j}) {p : comb c} → Combℂ α β {i} {j}
+cc! c {p} = cc c ⦃ p ⦄
+\end{code}
+%</cc!>
+
 
 -- "Smart constructors"
 %<*named>
