@@ -25,7 +25,7 @@ shift = delayℂ pSwap
 %<*toggle>
 \begin{code}
 toggle : ℂ ⊤ B
-toggle = ⊥ℂ ⟫ delayℂ (∨ℂ ⟫ ¬ℂ ⟫ pFork×)
+toggle = ⊥ℂ ⟫ delayℂ (∨ℂ ⟫ ¬ℂ ⟫ pFork×) ⦃ _ ⦄
 \end{code}
 %</toggle>
 
@@ -33,7 +33,7 @@ toggle = ⊥ℂ ⟫ delayℂ (∨ℂ ⟫ ¬ℂ ⟫ pFork×)
 %<*reg>
 \begin{code}
 reg : ℂ (B × B) B
-reg = delayℂ comb
+reg = delayℂ comb ⦃ _ ⦄
     where rearrange = pSwap || pid  ⟫  pALR  ⟫  pid || pSwap
           comb      = rearrange  ⟫  mux2to1  ⟫  pFork×
 \end{code}

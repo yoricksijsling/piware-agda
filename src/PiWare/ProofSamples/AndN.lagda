@@ -21,7 +21,7 @@ open import PiWare.Simulation BoolTrio using (⟦_⟧)
 
 %<*proof-andN-core-alltrue>
 \begin{code}
-proof-andN-core-alltrue : ∀ n → ⟦ andN' n ⟧' {andN'-comb n} (replicate true) ≡ [ true ]
+proof-andN-core-alltrue : ∀ n → ⟦ andN' n ⟧' ⦃ andN'-comb n ⦄ (replicate true) ≡ [ true ]
 proof-andN-core-alltrue zero    = refl
 proof-andN-core-alltrue (suc n) = cong (spec-and ∘ (_∷_ true)) (proof-andN-core-alltrue n)
 \end{code}
@@ -32,7 +32,7 @@ proof-andN-core-alltrue (suc n) = cong (spec-and ∘ (_∷_ true)) (proof-andN-c
 
 %<*proof-andN-alltrue>
 \begin{code}
-proof-andN-alltrue : ∀ n → ⟦ andN n ⟧ {andN-comb n} (replicate true) ≡ true
+proof-andN-alltrue : ∀ n → ⟦ andN n ⟧ ⦃ andN-comb n ⦄ (replicate true) ≡ true
 proof-andN-alltrue zero    = refl
 proof-andN-alltrue (suc n) rewrite proof-andN-core-alltrue n = refl
 \end{code}

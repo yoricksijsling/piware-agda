@@ -18,8 +18,8 @@ open ⇓W⇑ ⦃ ... ⦄ using (⇓; ⇑)
 
 %<*eval>
 \begin{code}
-⟦_⟧ : ∀ {α i β j} → (c : ℂ α β {i} {j}) {p : comb c} → (α → β)
-⟦ Mkℂ ⦃ sα ⦄ ⦃ sβ ⦄ c' ⟧ {p} = ⇑ ∘ ⟦ c' ⟧' {p} ∘ ⇓
+⟦_⟧ : ∀ {α i β j} → (c : ℂ α β {i} {j}) ⦃ p : comb c ⦄ → (α → β)
+⟦ Mkℂ ⦃ sα ⦄ ⦃ sβ ⦄ c' ⟧ = ⇑ ∘ ⟦ c' ⟧' ∘ ⇓
 \end{code}
 %</eval>
 

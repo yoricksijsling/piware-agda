@@ -25,7 +25,7 @@ open import PiWare.Samples.BoolTrioComb using (⊻ℂ; hadd; fadd)
 
 %<*xor-proof-table>
 \begin{code}
-⊻ℂ-proof-table : ∀ a b → ⟦ ⊻ℂ ⟧ (a , b) ≡ ⊻ℂ-spec-table (a , b)
+⊻ℂ-proof-table : ∀ a b → ⟦ ⊻ℂ ⟧ ⦃ _ ⦄ (a , b) ≡ ⊻ℂ-spec-table (a , b)
 ⊻ℂ-proof-table false false = refl
 ⊻ℂ-proof-table false true  = refl
 ⊻ℂ-proof-table true  false = refl
@@ -51,7 +51,7 @@ open import PiWare.Samples.BoolTrioComb using (⊻ℂ; hadd; fadd)
 
 %<*xor-proof-subfunc>
 \begin{code}
-⊻ℂ-proof-subfunc : ∀ a b → ⟦ ⊻ℂ ⟧ (a , b) ≡ ⊻ℂ-spec-subfunc (a , b)
+⊻ℂ-proof-subfunc : ∀ a b → ⟦ ⊻ℂ ⟧ ⦃ _ ⦄ (a , b) ≡ ⊻ℂ-spec-subfunc (a , b)
 ⊻ℂ-proof-subfunc = ⊻ℂ-xor-equiv
 \end{code}
 %</xor-proof-subfunc>
@@ -66,7 +66,7 @@ haddSpec a b = (a ∧ b) , (a xor b)
 
 %<*proofHaddBool>
 \begin{code}
-proofHaddBool : ∀ a b → ⟦ hadd ⟧ (a , b) ≡ haddSpec a b
+proofHaddBool : ∀ a b → ⟦ hadd ⟧ ⦃ _ ⦄ (a , b) ≡ haddSpec a b
 proofHaddBool a b = cong (_,_ (a ∧ b)) (⊻ℂ-xor-equiv a b)
 \end{code}
 %</proofHaddBool>
@@ -87,7 +87,7 @@ faddSpec true  true  true  = true  , true
 
 %<*proofFaddBool>
 \begin{code}
-proofFaddBool : ∀ a b c → ⟦ fadd ⟧ ((a , b) , c) ≡ faddSpec a b c
+proofFaddBool : ∀ a b c → ⟦ fadd ⟧ ⦃ _ ⦄ ((a , b) , c) ≡ faddSpec a b c
 proofFaddBool true  true  true  = refl
 proofFaddBool true  true  false = refl
 proofFaddBool true  false true  = refl

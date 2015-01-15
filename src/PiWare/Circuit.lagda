@@ -41,6 +41,18 @@ comb (Mkℂ c') = comb' c'
 %</comb>
 
 
+%<*CombC>
+\begin{code}
+record Combℂ (α β : Set) {i j : ℕ} : Set where
+    inductive
+    constructor cc
+    field
+      circ : ℂ α β {i} {j}
+      {{prf}} : comb circ
+\end{code}
+%</CombC>
+
+
 -- "Smart constructors"
 %<*named>
 \begin{code}
@@ -52,8 +64,8 @@ $</named>
 %<*delayC>
 \begin{code}
 delayℂ : ∀ {α i β j γ k} → ⦃ sα : ⇓W⇑ α {i} ⦄ ⦃ sβ : ⇓W⇑ β {j} ⦄ ⦃ sγ : ⇓W⇑ γ {k} ⦄
-         → (c : ℂ (α × γ) (β × γ) {i + k} {j + k}) {p : comb c} → ℂ α β {i} {j}
-delayℂ ⦃ sα ⦄ ⦃ sβ ⦄ ⦃ sγ ⦄ (Mkℂ c') {p} = Mkℂ ⦃ sα ⦄ ⦃ sβ ⦄ (DelayLoop c' {p})
+         → (c : ℂ (α × γ) (β × γ) {i + k} {j + k}) ⦃ p : comb c ⦄ → ℂ α β {i} {j}
+delayℂ ⦃ sα ⦄ ⦃ sβ ⦄ ⦃ sγ ⦄ (Mkℂ c') = Mkℂ ⦃ sα ⦄ ⦃ sβ ⦄ (DelayLoop c')
 \end{code}
 %</delayC>
 

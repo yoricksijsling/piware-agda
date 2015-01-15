@@ -27,7 +27,7 @@ comb' : {i o : ℕ} → ℂ' i o → Set
 data ℂ' where
     Nil   : ℂ' zero zero
     Gate  : (g# : Gates#) → ℂ' (|in| g#) (|out| g#)
-    DelayLoop : ∀ {i o l} (c : ℂ' (i + l) (o + l)) {p : comb' c} → ℂ' i o
+    DelayLoop : ∀ {i o l} (c : ℂ' (i + l) (o + l)) ⦃ p : comb' c ⦄ → ℂ' i o
 
     Plug : ∀ {i o} → (f : Fin o → Fin i) → ℂ' i o
     _⟫'_ : ∀ {i m o} → ℂ' i m → ℂ' m o → ℂ' i o
@@ -37,6 +37,17 @@ data ℂ' where
     _Named_ : ∀ {i o} → ℂ' i o → String → ℂ' i o
 \end{code}
 %</Circuit-core>
+
+%<*CombC-core>
+\begin{code}
+record Combℂ' (i o : ℕ) : Set where
+  inductive
+  constructor cc'
+  field
+    circ : ℂ' i o
+    ⦃ prf ⦄ : comb' circ
+\end{code}
+%</CombC-core>
 
 \begin{code}
 infixr 5 _|'_
