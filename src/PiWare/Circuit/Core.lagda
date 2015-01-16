@@ -76,6 +76,14 @@ comb' (c Named _)   = comb' c
 \end{code}
 %</comb-core>
 
+%<*instance-prod>
+\begin{code}
+instance
+  prod : ∀ {α β : Set} → ⦃ x : α ⦄ → ⦃ y : β ⦄ → α × β
+  prod ⦃ x ⦄ ⦃ y ⦄ = x , y
+\end{code}
+%</instance-prod>
+
 %<*lemma-comb-seq-core>
 \begin{code}
 _comb⟫'_ : {i m o : ℕ} {c₁' : ℂ' i m} {c₂' : ℂ' m o} → comb' c₁' → comb' c₂' → comb' (c₁' ⟫' c₂')

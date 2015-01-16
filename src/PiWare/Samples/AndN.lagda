@@ -18,38 +18,24 @@ open import PiWare.Synthesizable Atomic-B using (⇓W⇑[_,_])
 open import PiWare.Synthesizable.Bool using (⇓W⇑-B)
 
 open import PiWare.Gates.BoolTrio using (BoolTrio; TrueConst#; And#)
-open import PiWare.Circuit.Core BoolTrio using (ℂ'; Gate; _|'_; _⟫'_; comb')
-open import PiWare.Circuit BoolTrio using (ℂ; Mkℂ; comb)
+open import PiWare.Circuit.Core BoolTrio using (ℂ'; Combℂ'; cc'; Gate; _|'_; _⟫'_; comb')
+open import PiWare.Circuit BoolTrio using (ℂ; Combℂ; Mkℂ; comb; MkCombℂ)
 open import PiWare.Plugs.Core BoolTrio using (pid')
 \end{code}
 
 
 %<*andN-core>
 \begin{code}
-andN' : ∀ n → ℂ' n 1
-andN' zero    = Gate TrueConst#
-andN' (suc n) = pid' {1} |' andN' n  ⟫'  Gate And#
+andN' : ∀ n → Combℂ' n 1
+andN' zero    = cc' (Gate TrueConst#)
+andN' (suc n) with andN' n
+...           | cc' andN-n = cc' (pid' {1} |' andN-n  ⟫'  Gate And#)
 \end{code}
 %</andN-core>
 
-%<*andN-core-comb>
-\begin{code}
-andN'-comb : ∀ n → comb' (andN' n)
-andN'-comb zero    = tt
-andN'-comb (suc n) = (tt , andN'-comb n) , tt
-\end{code}
-%</andN-core-comb>
-
 %<*andN>
 \begin{code}
-andN : ∀ n → ℂ (Vec B n) B {n} {1}
-andN k = Mkℂ ⦃ sα = ⇓W⇑[ id , id ] ⦄ (andN' k)
+andN : ∀ n → Combℂ (Vec B n) B {n} {1}
+andN k = MkCombℂ {{sα = ⇓W⇑[ id , id ]}} (andN' k)
 \end{code}
 %</andN>
-
-%<*andN-comb>
-\begin{code}
-andN-comb : ∀ n → comb (andN n)
-andN-comb = andN'-comb
-\end{code}
-%</andN-comb>

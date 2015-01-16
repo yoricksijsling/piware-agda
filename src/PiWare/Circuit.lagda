@@ -52,6 +52,15 @@ record Combℂ (α β : Set) {i j : ℕ} : Set where
 \end{code}
 %</CombC>
 
+
+%<*MkCombC>
+\begin{code}
+MkCombℂ : ∀ {α i β j} ⦃ sα : ⇓W⇑ α {i} ⦄ ⦃ sβ : ⇓W⇑ β {j} ⦄ → Combℂ' i j → Combℂ α β {i} {j}
+MkCombℂ (cc' c) = cc (Mkℂ c)
+\end{code}
+%</MkCombC>
+
+
 %<*cc!>
 \begin{code}
 cc! : ∀ {α i β j} (c : ℂ α β {i} {j}) {p : comb c} → Combℂ α β {i} {j}

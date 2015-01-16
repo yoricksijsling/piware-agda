@@ -13,73 +13,72 @@ open import PiWare.Synthesizable.Bool
 open import PiWare.Gates.BoolTrio using (BoolTrio; FalseConst#; TrueConst#; Not#; And#; Or#)
 open import PiWare.Circuit.Core BoolTrio using (Gate)
 open import PiWare.Plugs BoolTrio using (pFork×; pid; pALR; pARL; pFst; pSnd)
-open import PiWare.Circuit BoolTrio using (ℂ; Mkℂ; _⟫_; _||_; |+; _named_)
+open import PiWare.Circuit BoolTrio using (ℂ; Combℂ; cc; Mkℂ; _⟫_; _||_; |+; _named_)
 \end{code}
 
 
 %<*fundamentals>
 \begin{code}
-⊥ℂ ⊤ℂ : ℂ ⊤ B
-⊥ℂ = Mkℂ (Gate FalseConst#) named "falseGate"
-⊤ℂ = Mkℂ (Gate TrueConst#) named "trueGate"
+⊥ℂ ⊤ℂ : Combℂ ⊤ B
+⊥ℂ = cc (Mkℂ (Gate FalseConst#) named "falseGate")
+⊤ℂ = cc (Mkℂ (Gate TrueConst#) named "trueGate")
 
-¬ℂ : ℂ B B
-¬ℂ = Mkℂ (Gate Not#) named "notGate"
+¬ℂ : Combℂ B B
+¬ℂ = cc (Mkℂ (Gate Not#) named "notGate")
 
-∧ℂ ∨ℂ : ℂ (B × B) B
-∧ℂ = Mkℂ (Gate And#) named "andGate"
-∨ℂ = Mkℂ (Gate Or#) named "orGate"
+∧ℂ ∨ℂ : Combℂ (B × B) B
+∧ℂ = cc (Mkℂ (Gate And#) named "andGate")
+∨ℂ = cc (Mkℂ (Gate Or#) named "orGate")
 \end{code}
 %</fundamentals>
 
 %<*nand>
 \begin{code}
-¬∧ℂ : ℂ (B × B) B
-¬∧ℂ = ∧ℂ ⟫ ¬ℂ named "nandGate"
+¬∧ℂ : Combℂ (B × B) B
+¬∧ℂ = cc (Combℂ.circ ∧ℂ ⟫ Combℂ.circ ¬ℂ named "nandGate")
 \end{code}
 %</nand>
 
 %<*xor>
 \begin{code}
-⊻ℂ : ℂ (B × B) B
-⊻ℂ =   pFork×
-     ⟫ (¬ℂ || pid ⟫ ∧ℂ) || (pid || ¬ℂ ⟫ ∧ℂ)
-     ⟫ ∨ℂ
-     named "xorGate"
+⊻ℂ : Combℂ (B × B) B
+⊻ℂ =  cc (pFork×
+     ⟫ (Combℂ.circ ¬ℂ || pid ⟫ Combℂ.circ ∧ℂ) || (pid || Combℂ.circ ¬ℂ ⟫ Combℂ.circ ∧ℂ)
+     ⟫ Combℂ.circ ∨ℂ)
 \end{code}
 %</xor>
 
 
-a × b → c × s
-%<*hadd>
-\begin{code}
-hadd : ℂ (B × B) (B × B)
-hadd =   pFork×
-       ⟫ ∧ℂ || ⊻ℂ
-       named "hadd"
-\end{code}
-%</hadd>
+-- a × b → c × s
+-- %<*hadd>
+-- \begin{code}
+-- hadd : ℂ (B × B) (B × B)
+-- hadd =   pFork×
+--        ⟫ ∧ℂ || ⊻ℂ
+--        named "hadd"
+-- \end{code}
+-- %</hadd>
 
-(a × b) × cin → co × s
-%<*fadd>
-\begin{code}
-fadd : ℂ ((B × B) × B) (B × B)
-fadd =   hadd || pid
-       ⟫    pALR
-       ⟫ pid  || hadd
-       ⟫    pARL
-       ⟫ ∨ℂ   || pid
-       named "fadd"
-\end{code}
-%</fadd>
+-- (a × b) × cin → co × s
+-- %<*fadd>
+-- \begin{code}
+-- fadd : ℂ ((B × B) × B) (B × B)
+-- fadd =   hadd || pid
+--        ⟫    pALR
+--        ⟫ pid  || hadd
+--        ⟫    pARL
+--        ⟫ ∨ℂ   || pid
+--        named "fadd"
+-- \end{code}
+-- %</fadd>
 
 
-%<*mux2to1>
-\begin{code}
-mux2to1 : ℂ (B × (B × B)) B
-mux2to1 =   pFork×
-          ⟫ (¬ℂ || pFst ⟫ ∧ℂ) || (pid || pSnd ⟫ ∧ℂ)
-          ⟫ ∨ℂ
-          named "mux2to1"
-\end{code}
-%</mux2to1>
+-- %<*mux2to1>
+-- \begin{code}
+-- mux2to1 : ℂ (B × (B × B)) B
+-- mux2to1 =   pFork×
+--           ⟫ (¬ℂ || pFst ⟫ ∧ℂ) || (pid || pSnd ⟫ ∧ℂ)
+--           ⟫ ∨ℂ
+--           named "mux2to1"
+-- \end{code}
+-- %</mux2to1>
